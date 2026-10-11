@@ -7,3 +7,4 @@
 5. Keep `README.md` and `README.zh-CN.md` synchronized. Keep `BUILD-INFO.md` in English and its Chinese version in `BUILD-INFO.zh-CN.md`, with matching release facts and reciprocal language links. Do not advertise unpublished artifacts as available.
 6. Store large client packages as GitHub Release assets rather than committing them when they exceed GitHub's repository file size limit.
 7. Organize artifacts under `web/`, `android/`, `lpk/`, `macos/`, `linux/`, and `windows/`; retain empty directories with `.gitkeep`. Keep the bilingual READMEs synchronized with the repository's purpose, platform and package descriptions, artifact directories, publication availability, and the iOS App Store and online Web client links.
+8. Refer to the platform as `懒猫微服` in Chinese documentation and `Lazycat` in English documentation, including release notes and build information.
