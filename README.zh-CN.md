@@ -17,4 +17,8 @@
 | Web | 已构建的 Web 客户端资源，可在自己的主机上独立部署并通过浏览器访问；也可以直接使用上方链接中的在线版本。 | [`web/`](./web/) |
 | 懒猫 LPK | 将 MoxChat Web 客户端打包为 LPK，用于在懒猫微服上安装和部署。 | [`lpk/`](./lpk/) |
 
-各产物目录目前用于后续发布，尚未放入可下载的安装包。实际可用产物、支持的系统版本、CPU 架构、安装方式和校验值会随每次发布说明。现有访问入口为上方的 iOS App Store 和在线 Web 客户端链接。
+**1.3.2** 现已提供：[Web ZIP 压缩包](https://github.com/MoxChat/MoxChat/releases/download/v1.3.2/moxchat-web-1.3.2.zip)和[懒猫 LPK 安装包](https://github.com/MoxChat/MoxChat/releases/download/v1.3.2/moxchat-1.3.2.lpk)。请查看[发布说明和校验文件](https://github.com/MoxChat/MoxChat/releases/tag/v1.3.2)及[构建信息](./BUILD-INFO.md)。Android、macOS、Linux 和 Windows 安装包暂未发布。
+
+独立部署 Web 时，先校验文件，再将 ZIP 解压到网站根目录，保留全部文件和路径。网站需使用 HTTPS，并在响应中设置 `Cross-Origin-Opener-Policy: same-origin` 和 `Cross-Origin-Embedder-Policy: require-corp`。请以 `application/wasm` 类型提供 `.wasm` 文件，并允许直接访问导出的 HTML 路由。ZIP 包含已构建的客户端，托管服务器无需安装 Node.js。部署后在浏览器中打开网站，确认应用正常加载，没有资源缺失或跨源隔离错误。
+
+懒猫微服用户请先校验文件，再通过应用界面安装 LPK，或运行 `lzc-cli app install moxchat-1.3.2.lpk`。要求懒猫系统 1.5.0 或以上。LPK 已包含 Web 客户端和浏览器隔离响应头配置，安装后打开分配的 `moxchat` 地址即可。
