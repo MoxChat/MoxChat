@@ -16,23 +16,22 @@
 
 ## Android
 
-- 基础源码提交：`1e6ea7f6457306e9a12aa478f27397127caf6e39`；隔离的 Android 构建另包含下述两行备忘录编辑器修正。原工作树保持原样。
-- 构建与包验证完成时间（UTC）：`2026-10-11T18:24:51Z`。
-- 构建入口：`node MoxChat/scripts/build-android-release.mjs`（`assembleRelease`）；已内置 JavaScript 资源，无需 Metro 开发服务器。
-- 包名：`com.ponzs.moxchat`，版本 `1.3.2`，版本号 `2`，目标 SDK `36`。
-- 安装要求：Android **8.0 或以上**（最低 SDK `26`）。包含 `arm64-v8a`、`armeabi-v7a`、`x86` 和 `x86_64` 四种架构。
-- 签名：release 构建使用项目现有的 **Android debug/test 测试密钥**，并非生产分发密钥。
-- 工具链：Temurin Java 17.0.20.1、Gradle 8.14.3、Android SDK 36、应用 Build Tools 36.0.0、NDK 27.1.12297006 和 CMake 3.22.1。
-- 仅本次构建的兼容设置：当前 WebGPU 依赖使用 Android 26 的硬件缓冲 API，因此最低 SDK 提升为 26；三个未显式指定 NDK 版本的依赖沿用项目的 NDK 27.1。16 GB 内存构建机上的 Gradle 任务和 Ninja 编译并发均限制为二。
-- Android 源码修正：`MoxNoteEditorModule.kt` 的覆盖方法及 `super` 调用使用 Android 正确的 `onSelectionChanged`，替换拼写错误的 `onNoteSelectionNoteChanged`。补丁 SHA-256：`5d75b47a231de1a82a5cefafff7b0a71a17674424db1adf47242d5ab81de0b88`。补丁与完整构建报告随本地 APK 保留；此修正仅应用于隔离的 Android 构建副本。
-- 验证：release 构建及必要 lint 检查通过，APK ZIP 完整性、APK v2 签名、包名/版本/最低系统版本、四种架构、内置 JavaScript 资源、产物校验值均通过检查；未包含 keystore、环境文件或 source map，原生库不含原工作区的开发者路径。未执行 Android 真机或模拟器安装及功能验收。
-- 安装：先校验文件，再将 APK 下载到 Android 8.0+ 设备，打开并按提示允许该来源安装。覆盖更新已有应用要求签名密钥一致。
-- 分发：APK 超过 GitHub 仓库单文件大小限制，保存在 [Release 附件](https://github.com/MoxChat/MoxChat/releases/download/v1.3.2/moxchat-android-1.3.2.apk)，校验值记录于 `android/SHA256SUMS`。
+- 更新包完成时间（UTC）：`2026-10-11T20:41:17+00:00`。
+- JavaScript、品牌资源与 MLS 源码：Mox 主仓库提交 `04a4eb5a2f44d9f206eb066b5d3a8c23bf7bb7aa` 加已标识的工作树补丁。补丁 SHA-256：`27762c3f9e6b408621f3bcb4c847751fd005ed25347da818eec4575232a24b9c`；本地构建清单记录了 121 个修改、新增或删除的源码文件。未纳入无关的 iOS 工程配置与 LPK 改动。
+- 打包方式：重新导出生产 Metro 资源、编译 Hermes 字节码并重建图标与启动资源；复用源码提交 `1e6ea7f6457306e9a12aa478f27397127caf6e39` 对应的原生基础包。原有 148 个原生库和 7 个 DEX 与之前 APK 逐字节一致。本次并非重新执行完整 Gradle 构建，而是加入四种架构新编译的 `libmox_mls_jni.so` 后重建并以原证书签名。
+- 原生 MLS：使用当前 MoxCore Rust/C++ 源码构建，包含 SQLCipher 和静态编译的 OpenSSL。之前 APK 漏打包 JNI 库；正式入口 `MoxChat/scripts/build-android-release.mjs` 现会编译并启用 MLS，准备失败时停止，不引入 TypeScript 密码回退。
+- 本次工具链：Node.js 24.18.1、现有 Expo 依赖中的 Hermes、Temurin Java 17.0.20.1、Android Build Tools 36.0.0、NDK 27.1.12297006、锁定的 Rust 依赖及 apktool 3.0.3。原生基础包使用 Gradle 8.14.3 和 CMake 3.22.1。
+- 包名 `com.ponzs.moxchat`，版本 `1.3.2`，版本号 `2`，目标 SDK `36`，最低 SDK `26`（**Android 8.0+**）。包含 `arm64-v8a`、`armeabi-v7a`、`x86`、`x86_64`，内置资源，无需 Metro。
+- 签名：沿用项目现有 **Android debug/test 测试密钥**，尚未配置生产分发密钥；覆盖更新要求签名一致。
+- 界面修正：删除旧抽屉及旧页面分支，使用当前四栏导航与共享表单；修复发现路由、资料头像与顶部间距、搜索控件、输入栏图标与触控、深色发送图标、键盘避让、折叠屏/平板分栏及真实分区拖拽。扣除 Tab 侧栏和分隔条后，两块内容区默认等宽。
+- 中继健康：由应用会话持有，进入前台立即检查，以三秒周期轮询；合并重叠检查、限制超时，手动和全局检查使用同一身份；安卓回到前台时再次检查。仍要求签名和身份认证校验成功，未绕过健康判定。
+- 平台隔离：安卓输入按钮、文本输入、键盘避让、分隔手势及启动预加载逻辑使用平台适配；iOS/Web 保留原启动预加载逻辑。新增 SQLCipher OpenSSL 依赖只对 Android 生效；共享分栏修复同时处理已报告的 iPad 拖拽问题。原有未提交的 iOS 工程配置保持原样。
+- 验证：APK ZIP 完整性、签名证书一致、16 KB ZIP 对齐、四种 MLS 库的 JNI 导出/ELF 对齐、原有原生库与 DEX 内容一致、TypeScript 和针对性 lint。在本次专用 Android 16 arm64 模拟器检查小屏/大屏导航、搜索、资料、系统键盘位置、反复语音/文本切换、深色图标、真实拖拽、自动中继健康和原生 MLS 启动；另用独立 iPad 模拟器加载当前 JavaScript 检查共享布局，用浏览器检查新导出的本地生产 Web 资源。此前 Find N2 真机证据对应前面的构建；最终 APK 未重复执行真机验证。这些检查不等于全平台穷尽验收或完整消息端到端验收。
+- 分发：[下载更新 APK](https://github.com/MoxChat/MoxChat/releases/download/v1.3.2/moxchat-android-1.3.2.apk)。Web ZIP 与懒猫微服 LPK 仍为上文记录的已发布版本，本次 Web 回归产物未替换它们；不含桌面安装包。
+- 安装：先校验 SHA-256，再下载并打开 APK，按提示允许对应来源安装。此次替换仍使用原文件名和版本号，请通过校验值区分新旧文件。
 
 | 产物 | SHA-256 |
 | --- | --- |
-| `web/moxchat-web-1.3.2.zip` | `1597d701da863c1a1d6a1ca24638a30e8a8632765d70bac76809513881d74020` |
-| `lpk/moxchat-1.3.2.lpk` | `62fd1b52bbb522707eb1edc69cd3394e6bc8640face5f6acf291f4fe83c60070` |
-| `moxchat-android-1.3.2.apk`（Release 附件） | `c1c5d7946854c302ae5b06cf946867c2719b0741f1a0fbcbace9f907be595723` |
-
-各产物目录提供对应的 `SHA256SUMS`。GitHub Releases 提供安装包和压缩包的合并 `SHA256SUMS`。安装或部署前请先校验文件。
+| `moxchat-web-1.3.2.zip` | `1597d701da863c1a1d6a1ca24638a30e8a8632765d70bac76809513881d74020` |
+| `moxchat-1.3.2.lpk` | `62fd1b52bbb522707eb1edc69cd3394e6bc8640face5f6acf291f4fe83c60070` |
+| `moxchat-android-1.3.2.apk` | `5ca3f9aa2efd06647fc7b4c09bdeaebddd3d6e41309de4ac9fcae43d1fb573d9` |

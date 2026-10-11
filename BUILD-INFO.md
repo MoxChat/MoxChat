@@ -16,23 +16,22 @@
 
 ## Android
 
-- Base source revision: `1e6ea7f6457306e9a12aa478f27397127caf6e39`; the isolated Android build also applies the two-line note-editor correction described below. The original workspace remains unchanged.
-- Build/package verification completed (UTC): `2026-10-11T18:24:51Z`.
-- Build entry: `node MoxChat/scripts/build-android-release.mjs` (`assembleRelease`); the JavaScript bundle is embedded and does not require a Metro development server.
-- Package: `com.ponzs.moxchat`, version `1.3.2`, version code `2`, target SDK `36`.
-- Requirements: Android **8.0 or later** (minimum SDK `26`). Included ABIs: `arm64-v8a`, `armeabi-v7a`, `x86`, and `x86_64`.
-- Signing: release build signed with the project's existing **Android debug/test key**, not a production distribution key.
-- Toolchain: Temurin Java 17.0.20.1, Gradle 8.14.3, Android SDK 36, app Build Tools 36.0.0, NDK 27.1.12297006, and CMake 3.22.1.
-- Build-only compatibility settings: minimum SDK raised to 26 because the current WebGPU dependency uses Android 26 hardware-buffer APIs; three dependencies without an explicit NDK version aligned with the project's NDK 27.1. Gradle workers and Ninja jobs limited to two on the 16 GB build host.
-- Android source correction: in `MoxNoteEditorModule.kt`, the override and its `super` call use Android's `onSelectionChanged` instead of the misspelled `onNoteSelectionNoteChanged`. Patch SHA-256: `5d75b47a231de1a82a5cefafff7b0a71a17674424db1adf47242d5ab81de0b88`. The patch and full build report are retained with the local APK; this correction was applied only to the isolated Android build copy.
-- Validation: successful release build and its required lint checks, APK ZIP integrity, APK Signature Scheme v2 verification, package/version/minimum SDK, all four ABIs, embedded JavaScript bundle, artifact checksum, and absence of keystores, environment files, source maps, and original workspace paths in native libraries. No physical Android device or emulator installation/functionality was acceptance-tested.
-- Installation: verify the checksum, download the APK to an Android 8.0+ device, open it, and allow installation from that source when prompted. Updating an existing installation requires the same signing key.
-- Distribution: the APK exceeds GitHub's repository file size limit and is stored as a [Release asset](https://github.com/MoxChat/MoxChat/releases/download/v1.3.2/moxchat-android-1.3.2.apk); `android/SHA256SUMS` records its checksum.
+- Updated package completed (UTC): `2026-10-11T20:41:17+00:00`.
+- JavaScript, branding and MLS source: main Mox revision `04a4eb5a2f44d9f206eb066b5d3a8c23bf7bb7aa` plus the identified working-tree patch. Patch SHA-256: `27762c3f9e6b408621f3bcb4c847751fd005ed25347da818eec4575232a24b9c`; 121 changed/new/deleted source files are recorded in the retained local build manifest. The unrelated iOS project configuration and LPK changes were excluded.
+- Packaging: fresh production Metro export and Hermes bytecode; rebuilt launcher/splash resources; original 1.3.2 native base from `1e6ea7f6457306e9a12aa478f27397127caf6e39` retained. All 148 existing native libraries and seven DEX files match the previous APK byte for byte. This update is not a new full Gradle build: it adds freshly compiled `libmox_mls_jni.so` for all four ABIs and signs the rebuilt APK with the same certificate.
+- Native MLS: built from current MoxCore Rust/C++ source with SQLCipher and statically bundled OpenSSL. The previous APK omitted the JNI library. The canonical `MoxChat/scripts/build-android-release.mjs` now builds/enables native MLS and fails if preparation fails. No TypeScript cryptographic fallback was added.
+- Toolchain for this update: Node.js 24.18.1, Hermes from the existing Expo dependencies, Temurin Java 17.0.20.1, Android Build Tools 36.0.0, NDK 27.1.12297006, the locked Rust dependencies, and apktool 3.0.3. The original native base used Gradle 8.14.3 and CMake 3.22.1.
+- Package: `com.ponzs.moxchat`, version `1.3.2`, version code `2`, target SDK `36`, minimum SDK `26` (**Android 8.0+**). ABIs: `arm64-v8a`, `armeabi-v7a`, `x86`, `x86_64`. The embedded bundle does not require Metro.
+- Signing: the existing project **Android debug/test key** is retained; a production distribution key has not been configured. Updating an installed app requires the same signing key.
+- UI corrections: modern four-tab navigation and current shared forms replace the obsolete drawer/pages; Discover routing, profile avatar/top spacing, search controls, composer icons/touch handling, dark send icon, keyboard avoidance, foldable/tablet layout and actual pane resizing are corrected. Content panes start equally wide after excluding the tab rail and divider.
+- Relay health: session-level ownership, immediate foreground check and a three-second polling interval; overlapping checks are coalesced, timeouts are bounded, and manual/global checks use the same identity. Android checks again on foreground resume. Successful signed/authenticated health validation remains required.
+- Platform isolation: Android-specific composer buttons/text field, keyboard avoidance, divider gesture and startup prelude use platform files/selection. iOS/Web retain their previous startup prelude; the additional SQLCipher OpenSSL dependency is Android-only. Shared pane geometry fixes also address the reported iPad divider defect. The pre-existing iOS project edit was preserved unchanged.
+- Validation: APK ZIP integrity, same signing certificate, 16 KB ZIP alignment, all four MLS libraries and their JNI exports/ELF alignment, unchanged existing native/DEX content, TypeScript and focused lint checks. A run-owned Android 16 arm64 emulator exercised narrow/wide navigation, search, profile, system-keyboard placement, repeated voice/text switching, dark icons, actual divider movement, automatic relay health, and native MLS startup. A separate iPad simulator loaded the current JavaScript for shared-layout regression; a browser used a fresh local production Web export. Earlier Find N2 physical-device evidence concerns preceding builds; the final APK was not re-tested on physical hardware. These checks do not constitute exhaustive cross-platform or end-to-end messaging acceptance.
+- Distribution: [download the updated APK](https://github.com/MoxChat/MoxChat/releases/download/v1.3.2/moxchat-android-1.3.2.apk). Web ZIP and Lazycat LPK remain the previously published packages described above; the current Web regression export was not substituted into those assets. Desktop packages are not included.
+- Installation: verify SHA-256, download/open the APK, and allow installation from that source. The filename and app version remain unchanged for this replacement; compare the checksum to identify the updated file.
 
 | Artifact | SHA-256 |
 | --- | --- |
-| `web/moxchat-web-1.3.2.zip` | `1597d701da863c1a1d6a1ca24638a30e8a8632765d70bac76809513881d74020` |
-| `lpk/moxchat-1.3.2.lpk` | `62fd1b52bbb522707eb1edc69cd3394e6bc8640face5f6acf291f4fe83c60070` |
-| `moxchat-android-1.3.2.apk` (Release asset) | `c1c5d7946854c302ae5b06cf946867c2719b0741f1a0fbcbace9f907be595723` |
-
-Each package directory contains its own `SHA256SUMS`. GitHub Releases provides a combined `SHA256SUMS` for the downloaded release assets. Verify files before installing or deploying them.
+| `moxchat-web-1.3.2.zip` | `1597d701da863c1a1d6a1ca24638a30e8a8632765d70bac76809513881d74020` |
+| `moxchat-1.3.2.lpk` | `62fd1b52bbb522707eb1edc69cd3394e6bc8640face5f6acf291f4fe83c60070` |
+| `moxchat-android-1.3.2.apk` | `5ca3f9aa2efd06647fc7b4c09bdeaebddd3d6e41309de4ac9fcae43d1fb573d9` |
