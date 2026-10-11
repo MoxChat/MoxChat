@@ -2,20 +2,5 @@
 
 [English](./README.md)
 
-这是 MoxChat 客户端发布仓库，用于分享 Android APK、Web 包和 PC 客户端。客户端源码和构建工具维护在 Mox 主源码仓库中。
-
-## 下载
-
-目前尚未在此发布客户端包。后续下载将通过 [GitHub Releases](https://github.com/MoxChat/MoxChat/releases) 提供，每次发布会说明支持平台、版本、安装方式及 SHA-256 校验值。
-
-| 产物 | 用途 |
-| --- | --- |
-| Android APK | 在兼容的 Android 设备上安装 MoxChat。 |
-| Web 包 | 在自己的主机上部署已构建的 MoxChat Web 客户端。 |
-| PC 客户端 | 安装或运行发布说明中所列平台的桌面客户端。 |
-
-请下载适合自己平台的产物，并在安装或部署前校验文件。更新时保留已有应用数据和运行配置。
-
-## 仓库内容
-
-本仓库只保存客户端发布说明及已发布产物，不保存应用源码、签名密钥、凭据、用户数据、依赖或本地构建缓存。上表列出产物用途，不代表已经提供下载；实际可用产物以发布附件为准。
+- iOS：[在 App Store 下载](https://apps.apple.com/us/app/moxchat/id6775016915)
+- Web：[打开 MoxChat 网页版](https://app.ponzs.com)
