@@ -6,4 +6,4 @@
 4. Publish only artifacts built from an identified source revision. Record the version, supported platform, source revision, build time, installation instructions, and SHA-256 checksums with each release.
 5. Keep `README.md` and `README.zh-CN.md` synchronized. Do not advertise unpublished artifacts as available.
 6. Store large client packages as GitHub Release assets rather than committing them when they exceed GitHub's repository file size limit.
-7. Organize artifacts under `web/`, `android/`, `lpk/`, and `pc/`; retain empty directories with `.gitkeep`. Keep the bilingual READMEs limited to their language switch and the iOS App Store and online Web client links.
+7. Organize artifacts under `web/`, `android/`, `lpk/`, and `pc/`; retain empty directories with `.gitkeep`. Keep the bilingual READMEs concise: a language switch, the repository's purpose, and the iOS App Store and online Web client links.
