@@ -5,12 +5,13 @@
 This repository is dedicated to distributing MoxChat client installation packages for iOS, Android, macOS, Linux, and Windows, as well as independently deployable Web packages and Lazycat LPK packages. Application source code and build tools are maintained in the main Mox source repository.
 
 - iOS: [Download on the App Store](https://apps.apple.com/us/app/moxchat/id6775016915)
+- Android: [Download APK (1.3.2)](https://github.com/MoxChat/MoxChat/releases/download/v1.3.2/moxchat-android-1.3.2.apk)
 - Web: [Open MoxChat](https://app.ponzs.com)
 
 | Platform / package | Purpose | Distribution location |
 | --- | --- | --- |
 | iOS | Install the iOS client through Apple's App Store. This repository provides the store link. | [App Store](https://apps.apple.com/us/app/moxchat/id6775016915) |
-| Android | APK installation packages for Android devices. | [`android/`](./android/) |
+| Android | APK installation packages for Android devices. | [Download APK (1.3.2)](https://github.com/MoxChat/MoxChat/releases/download/v1.3.2/moxchat-android-1.3.2.apk) · [`android/`](./android/) |
 | macOS | Desktop client installation packages or application archives for Mac computers. | [`macos/`](./macos/) |
 | Linux | Desktop client installation packages or portable archives for Linux computers. | [`linux/`](./linux/) |
 | Windows | Desktop client installers or portable packages for Windows computers. | [`windows/`](./windows/) |
